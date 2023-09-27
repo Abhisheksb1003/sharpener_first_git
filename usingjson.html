@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    
+</head>
+<body>
+<div class="container">
+    <form action="#" id="addform">
+        <div class="container">
+        
+            <h1 style="text-align: center;">Book A Call</h1>
+            <h3 style="text-align: center;">Book a call slot and our representative will call you within 1hr of selected time.</h3>
+            <label class="form-label">Name</label>
+   
+            <input type="text" class="form-control" id="uname" >
+            <label class="form-label">Email</label>
+            <input type="email" id="uemail" class="form-control">
+            <label class="form-label">Phone</label>
+            <input type="number" id="unumber" class="form-control" >
+          
+            <input type="submit" class="bg-success" value="submit" >
+        </div>
+    </form>
+    <script>
+       
+        var form = document.getElementById('addform');
+
+        form.addEventListener('submit', store);
+
+
+        //fucntion used to store data  using object 
+        function store(e){
+            e.preventDefault()
+
+            //get the form input value
+            var name = document.getElementById('uname').value;
+            var email = document.getElementById('uemail').value;
+            var number = document.getElementById('unumber').value;
+            
+
+            //create an object to store the form data
+            var formdata = {
+                'name':name,
+                'email':email,
+                'number':number ,
+                
+            };
+
+            //convert the object to json string 
+            var formData_serialized = JSON.stringify(formdata);
+
+            //store the json string in local storage
+            localStorage.setItem('formData', formData_serialized);
+
+            alert('form data has been stored in local storage');
+        }
+        </script>
+        </body>
+        </html>
