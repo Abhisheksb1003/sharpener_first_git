@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form id="myform">
+        <label>Product Name:</label>
+        <input type="text" id="product1">
+        <label>Selling Price:</label>
+        <input type="number" id="number1">
+        <input type="submit" value="Add Product">
+    </form>
+
+    <h1>Products</h1>
+    <ul id="itemlist"></ul>
+    <h3>Total Value Worth Of Product: <span id="totalValue">0</span></h3>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+        var ulr=document.getElementById('itemlist')
+        var dataform=document.getElementById('myform')
+        var totalValueElem = document.getElementById('totalValue');
+        var totalValue = 0;
+
+        dataform.addEventListener('submit',savedata)
+        
+        function savedata(e){
+            e.preventDefault();
+
+            var product = document.getElementById('product1').value;
+            var sell = document.getElementById('number1').value;
+        
+            let formobj = {
+                product ,
+                sell, 
+            };
+
+            totalValue += parseInt(sell);
+            totalValueElem.textContent = totalValue;
+
+            axios.post('https://crudcrud.com/api/57085c0e985c4df29855f90677c3bb83/ecommerce', formobj)
+            .then((response)=>{
+                showUserOnScreen(response.data)
+            })
+            .catch((err)=>{
+                console.log(err);
+            })
+        }
+
+        window.addEventListener('DOMContentLoaded', ()=>{
+            axios.get('https://crudcrud.com/api/57085c0e985c4df29855f90677c3bb83/ecommerce')
+                .then((response) =>{
+
+                    for(var i=0;i<response.data.length;i++){
+                        showUserOnScreen(response.data[i])
+                    }
+                })
+                .catch((err)=>{
+                    console.log(err);
+                })
+        })
+
+        function showUserOnScreen(formobj){
+            const parentElem = document.getElementById('itemlist');
+            const childElem = document.createElement('li');
+            childElem.textContent=formobj.product+'-'+ formobj.sell;
+
+            const deletebutton = document.createElement('input');
+            deletebutton.type='button';
+            deletebutton.value='Delete Product';
+            deletebutton.onclick = () =>{
+                totalValue -= parseInt(formobj.sell);
+                totalValueElem.textContent = totalValue;
+                localStorage.removeItem(formobj.product);
+                parentElem.removeChild(childElem);
+            }
+            const buttonContainer = document.createElement('div');
+            buttonContainer.appendChild(deletebutton);
+            childElem.appendChild(buttonContainer);
+            parentElem.appendChild(childElem)
+        }
+
+    </script>
+</body>
+</html>
